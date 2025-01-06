@@ -1,0 +1,18 @@
+name: wap_with_bauplan
+language: python
+runtimeConfig:
+  start:
+    - python3 wap_flow.py
+database:
+  hostname: localhost
+  port: 5432
+  username: postgres
+  password: password
+telemetry:
+  logs:
+    logLevel: INFO
+env:
+  TABLE_NAME: yellow_trips
+  BRANCH_NAME: jacopo.dbos_ingestion
+  S3_PATH: s3://my-bucket/taxi-2024/yellow_tripdata_2024-01.parquet
+  NAMESPACE: dbos
