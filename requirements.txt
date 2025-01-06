@@ -1,0 +1,2 @@
+dbos==0.15.0
+bauplan
