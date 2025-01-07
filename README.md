@@ -56,24 +56,24 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run the [local DBOS setup](https://docs.dbos.dev/quickstart#run-your-app-locally) to get started - i.e. install the CLI tool and setup the database with one of the recommended methods.
+Run the [local DBOS setup](https://docs.dbos.dev/quickstart#run-your-app-locally) to get started - i.e. install the CLI tool and setup the database with one of the recommended methods. For example, if you have Docker installed, you can use the following commands to start a containerized Postgres database (customized variables at your discretion):
 
-Make sure to add the proper environmental variables and runtime configuration to your `dbos-config.yaml` file, e.g.:
+```bash
+docker pull postgres
+docker run --name some-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=password -p 5432:5432  -d postgres
+```
+
+Once the database is running, make sure your `dbos-config.yaml` has both the `database` and the `env` section properly set up. For example:
 
 ```yaml
-name: wap_with_bauplan
-language: python
-runtimeConfig:
-  start:
-    - "python3 wap_flow.py"
 env:
   TABLE_NAME: 'yellow_trips'
-  BRANCH_NAME: 'jacopo.dbos_ingestion'
+  BRANCH_NAME: 'mybauplanuser.dbos_ingestion'
   S3_PATH: 's3://mybucket/yellow_tripdata_2024-01.parquet'
   NAMESPACE: 'dbos'
 ```
 
-Remember to run _migrate_ on the database when you first set up the project: 
+Remember to run _migrate_ on the database when you first set up the DBOS project in your Postgres: 
 
 ```bash
 dbos migrate
