@@ -17,6 +17,17 @@ This repository showcases how [DBOS](https://www.dbos.dev) and [Bauplan](https:/
 
 If you are impatient and want to see the project in action, this is us [running the code from our laptop](https://www.loom.com/share/f8c2e7e3b57d4e2286be02965931bb51?sid=30e576da-9240-4569-b64a-9de5350d82ee).
 
+### What happens under the hood?
+
+While the workflow looks and feels like a simple, no-nonsense Python script, a lot of magic happens behind the scenes _in the cloud_, over _object storage_. In particular, the WAP logic maps exactly to Bauplan operations over the datalake:
+
+* create a data branch, a zero-copy sandbox of the entire data lake in which to perform the ingestion safely;
+* create an Iceberg table inside this ingestion branch, loading the files in S3 into it;
+* retrieve a selected column from the Iceberg table to make sure there are no nulls (quality check);
+* merge the data branch into the production branch (on success), and clean-up the data branch before exiting.
+
+What to the developer looks like a function call (wrapped by DBOS for durable execution) is actually a complex sequence of infrastructure and cloud operations performed by Bauplan for you: you do not need to know anything about Iceberg specs, data branches, columnar querying, but just focus on the business logic.
+
 ## Setup
 
 ### Bauplan
@@ -60,6 +71,12 @@ env:
   BRANCH_NAME: 'jacopo.dbos_ingestion'
   S3_PATH: 's3://mybucket/yellow_tripdata_2024-01.parquet'
   NAMESPACE: 'dbos'
+```
+
+Remember to run _migrate_ on the database when you first set up the project: 
+
+```bash
+dbos migrate
 ```
 
 ## Run the workflow
