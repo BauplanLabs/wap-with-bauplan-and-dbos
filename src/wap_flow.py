@@ -146,7 +146,7 @@ def wap_with_bauplan(
     scheduled_time, actual_time
 ):
     """
-    Run the WAP ingestion pipeline using Bauplan in a Prefect flow
+    Run the WAP ingestion pipeline using Bauplan in a DBOS workflow
     leveraging the new concept of transactions:
     
     """
